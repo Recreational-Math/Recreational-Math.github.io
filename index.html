@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recreational Math — a two-person software club</title>
+  <meta name="description" content="Recreational Math is Terry &amp; Dave: small, sincere software about time, numbers and enthusiasm. Recently, duodecimal, sloooow, roadie, and other ideas in various states of undress." />
+  <meta property="og:title" content="Recreational Math+" />
+  <meta property="og:description" content="A two-person software club. Small, sincere software about time, numbers and enthusiasm." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://recreationalmath.com.au/" />
+  <meta property="og:image" content="https://recreationalmath.com.au/assets/rm-logo.png" />
+  <link rel="icon" type="image/png" href="assets/rm-logo.png" />
+  <meta name="theme-color" content="#0e0e12" />
+  <style>
+    :root {
+      --bg: #0e0e12;
+      --surface: #16161c;
+      --line: rgba(251, 223, 232, 0.14);
+      --pink: #fbdfe8;
+      --pink-dim: rgba(251, 223, 232, 0.62);
+      --pink-faint: rgba(251, 223, 232, 0.38);
+      --magenta: #e6007e;
+      --purple: #6a2ca0;
+      --orange: #e8703a;
+      --grad: linear-gradient(100deg, var(--orange) 0%, var(--purple) 32%, var(--magenta) 68%, #ff2e9a 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--pink);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+    /* ambient gradient glows */
+    .glow {
+      position: fixed; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; z-index: 0; opacity: 0.32;
+    }
+    .glow.a { width: 560px; height: 560px; background: var(--magenta); top: -220px; right: -140px; }
+    .glow.b { width: 480px; height: 480px; background: var(--purple); bottom: -200px; left: -160px; }
+    .glow.c { width: 320px; height: 320px; background: var(--orange); bottom: 10%; right: 8%; opacity: 0.14; }
+
+    main, header, footer { position: relative; z-index: 1; }
+
+    header { display: flex; align-items: center; justify-content: space-between; padding-top: 28px; }
+    .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .mark img { width: 40px; height: 40px; border-radius: 9px; }
+    .mark span { color: var(--pink); font-weight: 700; letter-spacing: -0.01em; }
+    header nav a {
+      color: var(--pink-dim); text-decoration: none; font-size: 14px; margin-left: 20px;
+    }
+    header nav a:hover { color: var(--pink); }
+
+    /* hero */
+    .hero { padding: 17vh 0 10vh; }
+    .hero h1 {
+      font-size: clamp(3rem, 9.5vw, 7.2rem);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 0.92;
+      background: var(--grad);
+      background-size: 180% 180%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shift 14s ease-in-out infinite alternate;
+    }
+    .hero h1 .plus { font-weight: 800; }
+    @keyframes shift {
+      from { background-position: 0% 40%; }
+      to { background-position: 100% 60%; }
+    }
+    .hero p.lede {
+      margin-top: 28px; max-width: 34em;
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.55; color: var(--pink-dim); font-weight: 300;
+    }
+    .hero p.lede strong { color: var(--pink); font-weight: 600; }
+
+    /* sections */
+    .sec-label {
+      display: flex; align-items: baseline; gap: 10px;
+      margin: 64px 0 22px;
+      font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--pink-faint); font-weight: 600;
+    }
+    .sec-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+
+    .card {
+      display: block; text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px; padding: 22px 20px 18px;
+      position: relative; overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .card::before {
+      content: ""; position: absolute; inset: 0;
+      background: var(--grad); opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .card > * { position: relative; }
+    a.card:hover { transform: translateY(-3px); border-color: rgba(251, 223, 232, 0.4); }
+    a.card:hover::before { opacity: 0.10; }
+    a.card:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
+
+    .card .num {
+      font-family: "SF Mono", ui-monospace, Menlo, monospace;
+      font-size: 12px; color: var(--pink-faint);
+    }
+    .card h3 { margin: 10px 0 6px; font-size: 21px; font-weight: 700; letter-spacing: -0.02em; color: var(--pink); }
+    .card p { font-size: 14px; line-height: 1.5; color: var(--pink-dim); font-weight: 300; min-height: 2.9em; }
+    .card .tag {
+      display: inline-block; margin-top: 14px;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+      padding: 4px 9px; border-radius: 99px; border: 1px solid var(--line); color: var(--pink-dim);
+    }
+    .card .tag.live { border-color: transparent; background: var(--grad); color: #fff; }
+
+    .card.idea { opacity: 0.62; }
+    .card.idea h3 { color: var(--pink-dim); }
+
+    footer {
+      margin-top: 96px; padding: 28px 0 40px;
+      border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between;
+      font-size: 13px; color: var(--pink-faint); font-weight: 300;
+    }
+    footer a { color: var(--pink-dim); text-decoration: none; }
+    footer a:hover { color: var(--pink); }
+    .dek { cursor: help; border-bottom: 1px dotted var(--pink-faint); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1 { animation: none; }
+      .card, a.card:hover { transition: none; transform: none; }
+      html { scroll-behavior: auto; }
+    }
+    @media (max-width: 560px) {
+      .hero { padding-top: 11vh; }
+      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .card p { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+  <div class="glow c"></div>
+
+  <div class="wrap">
+    <header>
+      <a class="mark" href="/">
+        <img src="assets/rm-logo.png" alt="Recreational Math logo" />
+        <span>Recreational&nbsp;Math</span>
+      </a>
+      <nav>
+        <a href="#things">things we made</a>
+        <a href="#ideas">ideas</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Recreational<br />Math<span class="plus">+</span></h1>
+        <p class="lede">
+          A two-person software club — <strong>Terry</strong> &amp; <strong>Dave</strong>.
+          We make small, sincere software about time, numbers and enthusiasm.
+          Some of it ships. All of it counts.
+        </p>
+      </section>
+
+      <section id="things">
+        <div class="sec-label">things we made</div>
+        <div class="grid">
+          <a class="card" href="https://recently.co">
+            <span class="num">1</span>
+            <h3>recently</h3>
+            <p>The anti-selfie social network. Shout about things you love that other people made.</p>
+            <span class="tag live">live</span>
+          </a>
+          <a class="card" href="https://sloooow.app">
+            <span class="num">2</span>
+            <h3>sloooow</h3>
+            <p>Watch the year go by, slowly, from your wrist. A dial for days gone and days left.</p>
+            <span class="tag live">App&nbsp;Store</span>
+          </a>
+          <a class="card" href="https://duodecimal-ac2cf.web.app">
+            <span class="num">3</span>
+            <h3>duodecimal</h3>
+            <p>Make dots, for two. A little game about twelve.</p>
+            <span class="tag live">live</span>
+          </a>
+          <div class="card">
+            <span class="num">4</span>
+            <h3>roadie</h3>
+            <p>A tote bag full of albums to remember. Music curation with your people.</p>
+            <span class="tag">september 2026</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ideas">
+        <div class="sec-label">ideas in various states of undress</div>
+        <div class="grid">
+          <div class="card idea">
+            <span class="num">5</span>
+            <h3>BiOS</h3>
+            <p>Biorhythms, charted beautifully.</p>
+          </div>
+          <div class="card idea">
+            <span class="num">6</span>
+            <h3>concentrix</h3>
+            <p>A centrally positioned clock face.</p>
+          </div>
+          <div class="card idea">
+            <span class="num">7</span>
+            <h3>crouton</h3>
+            <p>Public accountability, one crumb at a time.</p>
+          </div>
+          <div class="card idea">
+            <span class="num">8</span>
+            <h3>TapUp</h3>
+            <p>Undisclosed. Involves tapping.</p>
+          </div>
+          <div class="card idea">
+            <span class="num">9</span>
+            <h3>AnyTwo</h3>
+            <p>Any two cards can win.</p>
+          </div>
+          <div class="card idea">
+            <span class="num" title="that's a dek — ten, in base twelve"><span class="dek">↊</span></span>
+            <h3>metalbox</h3>
+            <p>It's a box. It's metal. We'll say no more.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Recreational Math+ · recreationalmath.com.au</span>
+      <span>cards numbered in <a href="https://en.wikipedia.org/wiki/Duodecimal">base twelve</a>, obviously</span>
+    </footer>
+  </div>
+</body>
+</html>
