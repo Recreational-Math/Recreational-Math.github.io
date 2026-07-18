@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recreational Math — the gateway hobby</title>
+<style>
+  :root {
+    --paper: #f5f2ea; --ink: #131313; --dim: #131313aa; --line: #13131322;
+    --magenta: #e6007e; --purple: #6a2ca0; --orange: #e8703a; --pink: #fbdfe8;
+    --grad: linear-gradient(100deg, var(--orange), var(--purple) 40%, var(--magenta));
+  }
+  [data-theme="dark"] {
+    --paper: #131313; --ink: #f5f2ea; --dim: #f5f2eaaa; --line: #f5f2ea26;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    transition: background 0.2s;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  .mark { font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; font-size: 14px; }
+  .mark .plus { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 18px; }
+  button.mode {
+    background: none; border: 2px solid var(--ink); color: var(--ink);
+    font: inherit; font-weight: 700; font-size: 12px; padding: 5px 12px;
+    text-transform: uppercase; cursor: pointer; border-radius: 0;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  button.mode:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+  .hero { padding: 12vh 0 8vh; position: relative; }
+  h1 {
+    font-size: clamp(3.2rem, 11vw, 8rem); font-weight: 800;
+    letter-spacing: -0.05em; line-height: 0.88; text-transform: uppercase;
+  }
+  h1 .row2 { display: inline-block; }
+  h1 .plus {
+    display: inline-block; background: var(--grad);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    transform: rotate(8deg); transform-origin: bottom left;
+  }
+  .sticker {
+    position: absolute; top: 8vh; right: 0; transform: rotate(7deg);
+    background: var(--grad); color: #fff; font-weight: 800; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 14px;
+    clip-path: polygon(2% 8%, 98% 0%, 100% 88%, 4% 100%);
+  }
+  .quote { margin-top: 34px; max-width: 36em; font-size: 17px; line-height: 1.55; }
+  .quote em { background: var(--pink); color: #131313; font-style: normal; padding: 0 4px; }
+  .quote .src { display: block; margin-top: 8px; font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .warning {
+    margin-top: 26px; border: 2px dashed var(--ink); padding: 12px 16px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    display: inline-block; transform: rotate(-1deg);
+  }
+
+  h2 { margin: 60px 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--dim); }
+  h2::before { content: "→ "; }
+  table { width: 100%; border-collapse: collapse; }
+  tr { border-bottom: 2px solid var(--ink); }
+  tr.idea { border-bottom: 1px solid var(--line); color: var(--dim); }
+  td { padding: 16px 8px 16px 0; vertical-align: baseline; }
+  td.num { font-family: ui-monospace, Menlo, monospace; font-size: 13px; width: 34px; color: var(--dim); }
+  td.name { font-size: clamp(1.4rem, 3.4vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; padding-right: 18px; }
+  td.what { font-size: 14px; line-height: 1.4; width: 55%; }
+  td.status { text-align: right; font-size: 11px; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
+  td.status .live { background: var(--grad); color: #fff; padding: 4px 8px; transform: rotate(-2deg); display: inline-block; }
+  a.proj { color: inherit; text-decoration: none; display: contents; }
+  a.proj:hover td.name { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  footer { margin: 70px 0 30px; font-size: 12px; color: var(--dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  @media (max-width: 640px) { td.what { display: none; } .sticker { position: static; display: inline-block; margin-top: 10px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="mark">Recreational Math<span class="plus">+</span></span>
+    <button class="mode" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">mode</button>
+  </header>
+
+  <section class="hero">
+    <span class="sticker">the gateway hobby</span>
+    <h1>Recre<br />ational<br /><span class="row2">Math<span class="plus">+</span></span></h1>
+    <p class="quote">
+      Ernő Rubik got into <em>recreational mathematics</em> as a teenager.
+      It escalated. Now it's us: Terry &amp; Dave, a two-person software club making
+      small, sincere software about time, numbers and enthusiasm.
+      <span class="src">warning: may lead to harder hobbies</span>
+    </p>
+    <div class="warning">No VC. No roadmap. No adult supervision.</div>
+  </section>
+
+  <h2>things we made</h2>
+  <table>
+    <a class="proj" href="https://recently.co"><tr>
+      <td class="num">1</td><td class="name">recently</td>
+      <td class="what">The anti-selfie social network. Shout about things you love that other people made.</td>
+      <td class="status"><span class="live">live</span></td>
+    </tr></a>
+    <a class="proj" href="https://sloooow.app"><tr>
+      <td class="num">2</td><td class="name">sloooow</td>
+      <td class="what">Watch the year go by, slowly, from your wrist.</td>
+      <td class="status"><span class="live">app store</span></td>
+    </tr></a>
+    <a class="proj" href="https://duodecimal-ac2cf.web.app"><tr>
+      <td class="num">3</td><td class="name">duodecimal</td>
+      <td class="what">Make dots, for two. A little game about twelve.</td>
+      <td class="status"><span class="live">live</span></td>
+    </tr></a>
+    <tr>
+      <td class="num">4</td><td class="name">roadie</td>
+      <td class="what">A tote bag full of albums to remember.</td>
+      <td class="status">sept 2026</td>
+    </tr>
+  </table>
+
+  <h2>ideas in various states of undress</h2>
+  <table>
+    <tr class="idea"><td class="num">5</td><td class="name">BiOS</td><td class="what">Biorhythms, charted beautifully.</td><td class="status">idea</td></tr>
+    <tr class="idea"><td class="num">6</td><td class="name">concentrix</td><td class="what">A centrally positioned clock face.</td><td class="status">idea</td></tr>
+    <tr class="idea"><td class="num">7</td><td class="name">crouton</td><td class="what">Public accountability, one crumb at a time.</td><td class="status">idea</td></tr>
+    <tr class="idea"><td class="num">8</td><td class="name">TapUp</td><td class="what">Undisclosed. Involves tapping.</td><td class="status">idea</td></tr>
+    <tr class="idea"><td class="num">9</td><td class="name">AnyTwo</td><td class="what">Any two cards can win.</td><td class="status">idea</td></tr>
+    <tr class="idea"><td class="num" title="dek — ten in base twelve">↊</td><td class="name">metalbox</td><td class="what">It's a box. It's metal. We'll say no more.</td><td class="status">idea</td></tr>
+  </table>
+
+  <footer>
+    <span>recreationalmath.com.au</span>
+    <span>numbered in base twelve, obviously</span>
+  </footer>
+</div>
+</body>
+</html>

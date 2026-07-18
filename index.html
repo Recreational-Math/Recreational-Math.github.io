@@ -91,41 +91,25 @@
     }
     .sec-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-
-    .card {
-      display: block; text-decoration: none;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 14px; padding: 22px 20px 18px;
-      position: relative; overflow: hidden;
-      transition: transform 0.25s ease, border-color 0.25s ease;
+    table { width: 100%; border-collapse: collapse; }
+    tr { border-bottom: 1px solid rgba(251, 223, 232, 0.3); }
+    tr.idea { border-bottom: 1px solid var(--line); }
+    td { padding: 20px 8px 20px 0; vertical-align: baseline; }
+    td.num { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 13px; width: 36px; color: var(--pink-faint); }
+    td.name { font-size: clamp(1.5rem, 3.6vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; padding-right: 22px; color: var(--pink); }
+    td.what { font-size: 14.5px; line-height: 1.5; width: 54%; color: var(--pink-dim); font-weight: 300; }
+    td.status { text-align: right; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--pink-dim); }
+    td.status .live {
+      background: var(--grad); color: #fff; padding: 5px 10px; border-radius: 99px;
+      display: inline-block;
     }
-    .card::before {
-      content: ""; position: absolute; inset: 0;
-      background: var(--grad); opacity: 0;
-      transition: opacity 0.25s ease;
+    a.proj { color: inherit; text-decoration: none; display: contents; }
+    a.proj:hover td.name {
+      background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .card > * { position: relative; }
-    a.card:hover { transform: translateY(-3px); border-color: rgba(251, 223, 232, 0.4); }
-    a.card:hover::before { opacity: 0.10; }
-    a.card:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
-
-    .card .num {
-      font-family: "SF Mono", ui-monospace, Menlo, monospace;
-      font-size: 12px; color: var(--pink-faint);
-    }
-    .card h3 { margin: 10px 0 6px; font-size: 21px; font-weight: 700; letter-spacing: -0.02em; color: var(--pink); }
-    .card p { font-size: 14px; line-height: 1.5; color: var(--pink-dim); font-weight: 300; min-height: 2.9em; }
-    .card .tag {
-      display: inline-block; margin-top: 14px;
-      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
-      padding: 4px 9px; border-radius: 99px; border: 1px solid var(--line); color: var(--pink-dim);
-    }
-    .card .tag.live { border-color: transparent; background: var(--grad); color: #fff; }
-
-    .card.idea { opacity: 0.62; }
-    .card.idea h3 { color: var(--pink-dim); }
+    a.proj:focus-visible td.name { outline: 2px solid var(--magenta); outline-offset: 3px; }
+    tr.idea td.name { color: var(--pink-dim); font-weight: 700; }
+    tr.idea td { opacity: 0.75; }
 
     footer {
       margin-top: 96px; padding: 28px 0 40px;
@@ -142,10 +126,9 @@
       .card, a.card:hover { transition: none; transform: none; }
       html { scroll-behavior: auto; }
     }
-    @media (max-width: 560px) {
+    @media (max-width: 640px) {
       .hero { padding-top: 11vh; }
-      .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .card p { min-height: 0; }
+      td.what { display: none; }
     }
   </style>
 </head>
@@ -178,68 +161,40 @@
 
       <section id="things">
         <div class="sec-label">things we made</div>
-        <div class="grid">
-          <a class="card" href="https://recently.co">
-            <span class="num">1</span>
-            <h3>recently</h3>
-            <p>The anti-selfie social network. Shout about things you love that other people made.</p>
-            <span class="tag live">live</span>
-          </a>
-          <a class="card" href="https://sloooow.app">
-            <span class="num">2</span>
-            <h3>sloooow</h3>
-            <p>Watch the year go by, slowly, from your wrist. A dial for days gone and days left.</p>
-            <span class="tag live">App&nbsp;Store</span>
-          </a>
-          <a class="card" href="https://duodecimal-ac2cf.web.app">
-            <span class="num">3</span>
-            <h3>duodecimal</h3>
-            <p>Make dots, for two. A little game about twelve.</p>
-            <span class="tag live">live</span>
-          </a>
-          <div class="card">
-            <span class="num">4</span>
-            <h3>roadie</h3>
-            <p>A tote bag full of albums to remember. Music curation with your people.</p>
-            <span class="tag">september 2026</span>
-          </div>
-        </div>
+        <table>
+          <a class="proj" href="https://recently.co"><tr>
+            <td class="num">1</td><td class="name">recently</td>
+            <td class="what">The anti-selfie social network. Shout about things you love that other people made.</td>
+            <td class="status"><span class="live">live</span></td>
+          </tr></a>
+          <a class="proj" href="https://sloooow.app"><tr>
+            <td class="num">2</td><td class="name">sloooow</td>
+            <td class="what">Watch the year go by, slowly, from your wrist. A dial for days gone and days left.</td>
+            <td class="status"><span class="live">App&nbsp;Store</span></td>
+          </tr></a>
+          <a class="proj" href="https://duodecimal-ac2cf.web.app"><tr>
+            <td class="num">3</td><td class="name">duodecimal</td>
+            <td class="what">Make dots, for two. A little game about twelve.</td>
+            <td class="status"><span class="live">live</span></td>
+          </tr></a>
+          <tr>
+            <td class="num">4</td><td class="name">roadie</td>
+            <td class="what">A tote bag full of albums to remember. Music curation with your people.</td>
+            <td class="status">september 2026</td>
+          </tr>
+        </table>
       </section>
 
       <section id="ideas">
         <div class="sec-label">ideas in various states of undress</div>
-        <div class="grid">
-          <div class="card idea">
-            <span class="num">5</span>
-            <h3>BiOS</h3>
-            <p>Biorhythms, charted beautifully.</p>
-          </div>
-          <div class="card idea">
-            <span class="num">6</span>
-            <h3>concentrix</h3>
-            <p>A centrally positioned clock face.</p>
-          </div>
-          <div class="card idea">
-            <span class="num">7</span>
-            <h3>crouton</h3>
-            <p>Public accountability, one crumb at a time.</p>
-          </div>
-          <div class="card idea">
-            <span class="num">8</span>
-            <h3>TapUp</h3>
-            <p>Undisclosed. Involves tapping.</p>
-          </div>
-          <div class="card idea">
-            <span class="num">9</span>
-            <h3>AnyTwo</h3>
-            <p>Any two cards can win.</p>
-          </div>
-          <div class="card idea">
-            <span class="num" title="that's a dek — ten, in base twelve"><span class="dek">↊</span></span>
-            <h3>metalbox</h3>
-            <p>It's a box. It's metal. We'll say no more.</p>
-          </div>
-        </div>
+        <table>
+          <tr class="idea"><td class="num">5</td><td class="name">BiOS</td><td class="what">Biorhythms, charted beautifully.</td><td class="status">idea</td></tr>
+          <tr class="idea"><td class="num">6</td><td class="name">concentrix</td><td class="what">A centrally positioned clock face.</td><td class="status">idea</td></tr>
+          <tr class="idea"><td class="num">7</td><td class="name">crouton</td><td class="what">Public accountability, one crumb at a time.</td><td class="status">idea</td></tr>
+          <tr class="idea"><td class="num">8</td><td class="name">TapUp</td><td class="what">Undisclosed. Involves tapping.</td><td class="status">idea</td></tr>
+          <tr class="idea"><td class="num">9</td><td class="name">AnyTwo</td><td class="what">Any two cards can win.</td><td class="status">idea</td></tr>
+          <tr class="idea"><td class="num" title="that's a dek — ten, in base twelve"><span class="dek">↊</span></td><td class="name">metalbox</td><td class="what">It's a box. It's metal. We'll say no more.</td><td class="status">idea</td></tr>
+        </table>
       </section>
     </main>
 

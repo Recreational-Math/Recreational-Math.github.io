@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recreational Math — a two-person software club</title>
+<style>
+  :root {
+    --bg: #fbdfe8; --ink: #2a1030; --dim: #2a1030b0; --card: #ffffffb8; --line: #2a103021;
+    --magenta: #e6007e; --purple: #6a2ca0; --orange: #e8703a;
+    --grad: linear-gradient(100deg, var(--orange), var(--purple) 38%, var(--magenta) 75%, #ff2e9a);
+  }
+  [data-theme="dark"] {
+    --bg: #16060f; --ink: #fbdfe8; --dim: #fbdfe8b0; --card: #ffffff10; --line: #fbdfe824;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; transition: background 0.25s; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 24px; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  .logo { width: 40px; height: 40px; border-radius: 9px; display: block; }
+  button.mode { background: var(--card); border: 1px solid var(--line); color: var(--ink); font: inherit; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 99px; cursor: pointer; }
+
+  .hero { min-height: 74vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 5vh; }
+  h1 {
+    font-size: clamp(3.4rem, 10.5vw, 7.6rem); font-weight: 800; letter-spacing: -0.045em; line-height: 0.94;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { margin-top: 22px; max-width: 33em; font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.55; color: var(--dim); }
+  .hero p strong { color: var(--ink); }
+  .hero .rebel { margin-top: 10px; font-size: 13px; color: var(--dim); font-style: italic; }
+
+  h2 { margin: 58px 0 18px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--dim); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 20px; text-decoration: none; color: inherit; display: block;
+    transition: transform 0.2s ease;
+  }
+  a.card:hover { transform: rotate(-1deg) translateY(-3px); }
+  .card .num { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--dim); }
+  .card h3 { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin: 8px 0 6px; }
+  a.card:hover h3 { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .card p { font-size: 13.5px; line-height: 1.5; color: var(--dim); min-height: 2.9em; }
+  .tag { display: inline-block; margin-top: 12px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--dim); }
+  .tag.live { background: var(--grad); color: #fff; border: none; }
+  .idea { opacity: 0.6; }
+  footer { margin: 70px 0 30px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; color: var(--dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; } .card p { min-height: 0; } .hero { min-height: 58vh; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img class="logo" src="assets/rm-logo.png" alt="Recreational Math" />
+    <button class="mode" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">light / dark</button>
+  </header>
+
+  <section class="hero">
+    <h1>Recreational<br />Math+</h1>
+    <p>
+      A <strong>two-person software club</strong> — Terry &amp; Dave. Small, sincere software
+      about time, numbers and enthusiasm. Ernő Rubik picked up recreational mathematics
+      as a teenager and never recovered; neither did we.
+    </p>
+    <p class="rebel">the safest recreational habit · no adult supervision since forever</p>
+  </section>
+
+  <h2>Things we made</h2>
+  <div class="grid">
+    <a class="card" href="https://recently.co"><span class="num">1</span><h3>recently</h3><p>The anti-selfie social network. Shout about things you love that other people made.</p><span class="tag live">live</span></a>
+    <a class="card" href="https://sloooow.app"><span class="num">2</span><h3>sloooow</h3><p>Watch the year go by, slowly, from your wrist.</p><span class="tag live">App Store</span></a>
+    <a class="card" href="https://duodecimal-ac2cf.web.app"><span class="num">3</span><h3>duodecimal</h3><p>Make dots, for two. A little game about twelve.</p><span class="tag live">live</span></a>
+    <div class="card"><span class="num">4</span><h3>roadie</h3><p>A tote bag full of albums to remember.</p><span class="tag">September 2026</span></div>
+  </div>
+
+  <h2>Ideas in various states of undress</h2>
+  <div class="grid">
+    <div class="card idea"><span class="num">5</span><h3>BiOS</h3><p>Biorhythms, charted beautifully.</p></div>
+    <div class="card idea"><span class="num">6</span><h3>concentrix</h3><p>A centrally positioned clock face.</p></div>
+    <div class="card idea"><span class="num">7</span><h3>crouton</h3><p>Public accountability, one crumb at a time.</p></div>
+    <div class="card idea"><span class="num">8</span><h3>TapUp</h3><p>Undisclosed. Involves tapping.</p></div>
+    <div class="card idea"><span class="num">9</span><h3>AnyTwo</h3><p>Any two cards can win.</p></div>
+    <div class="card idea"><span class="num" title="dek — ten in base twelve">↊</span><h3>metalbox</h3><p>It's a box. It's metal. We'll say no more.</p></div>
+  </div>
+
+  <footer>
+    <span>Recreational Math+ · recreationalmath.com.au</span>
+    <span>numbered in base twelve, obviously</span>
+  </footer>
+</div>
+</body>
+</html>
