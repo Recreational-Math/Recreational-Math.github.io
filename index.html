@@ -103,11 +103,12 @@
       background: var(--grad); color: #fff; padding: 5px 10px; border-radius: 99px;
       display: inline-block;
     }
-    a.proj { color: inherit; text-decoration: none; display: contents; }
-    a.proj:hover td.name {
+    tr.proj { cursor: pointer; }
+    tr.proj td.name a { color: inherit; text-decoration: none; }
+    tr.proj:hover td.name a, tr.proj td.name a:focus-visible {
       background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    a.proj:focus-visible td.name { outline: 2px solid var(--magenta); outline-offset: 3px; }
+    tr.proj td.name a:focus-visible { outline: 2px solid var(--magenta); outline-offset: 3px; }
     tr.idea td.name { color: var(--pink-dim); font-weight: 700; }
     tr.idea td { opacity: 0.75; }
 
@@ -168,31 +169,31 @@
       <section id="things">
         <div class="sec-label">things we made</div>
         <table>
-          <a class="proj" href="https://recently.co"><tr>
-            <td class="num">1</td><td class="name">recently</td>
+          <tr class="proj" data-href="https://recently.co">
+            <td class="num">1</td><td class="name"><a href="https://recently.co">recently</a></td>
             <td class="what">The anti-selfie social network. Shout about things you love that other people made.</td>
             <td class="status"><span class="live">live</span></td>
-          </tr></a>
-          <a class="proj" href="https://sloooow.app"><tr>
-            <td class="num">2</td><td class="name">sloooow</td>
+          </tr>
+          <tr class="proj" data-href="https://sloooow.app">
+            <td class="num">2</td><td class="name"><a href="https://sloooow.app">sloooow</a></td>
             <td class="what">Watch the year go by, slowly, from your wrist. A dial for days gone and days left.</td>
             <td class="status"><span class="live">live</span></td>
-          </tr></a>
-          <a class="proj" href="https://duodecimal-ac2cf.web.app"><tr>
-            <td class="num">3</td><td class="name">duodecimal</td>
+          </tr>
+          <tr class="proj" data-href="https://duodecimal-ac2cf.web.app">
+            <td class="num">3</td><td class="name"><a href="https://duodecimal-ac2cf.web.app">duodecimal</a></td>
             <td class="what">Make dots, for two. A little game about twelve.</td>
             <td class="status"><span class="live">live</span></td>
-          </tr></a>
+          </tr>
           <tr>
             <td class="num">4</td><td class="name">roadie</td>
             <td class="what">A tote bag full of albums to remember. Music curation with your people.</td>
             <td class="status">september 2026</td>
           </tr>
-          <a class="proj" href="/bios/"><tr>
-            <td class="num">5</td><td class="name">BiOS</td>
+          <tr class="proj" data-href="/bios/">
+            <td class="num">5</td><td class="name"><a href="/bios/">BiOS</a></td>
             <td class="what">Biorhythms, charted beautifully. Probably nonsense — we&rsquo;re checking.</td>
             <td class="status">soon</td>
-          </tr></a>
+          </tr>
         </table>
       </section>
 
@@ -213,5 +214,13 @@
       <span>cards numbered in <a href="https://en.wikipedia.org/wiki/Duodecimal">base twelve</a>, obviously</span>
     </footer>
   </div>
+  <script>
+    document.querySelectorAll("tr.proj[data-href]").forEach(function (row) {
+      row.addEventListener("click", function (e) {
+        if (e.target.closest("a")) return;
+        location.href = row.dataset.href;
+      });
+    });
+  </script>
 </body>
 </html>
