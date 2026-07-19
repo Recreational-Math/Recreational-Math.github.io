@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BiOS — three waves, running since the day you were born</title>
+<meta name="description" content="BiOS plots the three biorhythm cycles — physical, emotional, intellectual — for you and your friends. A Recreational Math project for iPhone.">
+<meta property="og:title" content="BiOS">
+<meta property="og:description" content="On the purported oscillation of human capacities, measured in days since birth. Free on iPhone.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://recreationalmath.com.au/bios/">
+<link rel="icon" type="image/png" href="/assets/rm-logo.png">
+<link rel="canonical" href="https://recreationalmath.com.au/bios/">
+<style>
+  :root {
+    --bg: #050508;
+    --tile: #0f0f1e;
+    --physical: #40c8e0;
+    --emotional: #ff453a;
+    --intellectual: #ffc83a;
+    --mono-text: #a6a6a6;
+    --text: #f2f2f4;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "SF Pro", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  /* film grain over everything */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* ambient waves live behind everything */
+  #waves { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; }
+  main { position: relative; z-index: 1; }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mono-text);
+    font-size: 0.78rem;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* reveal choreography */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal:nth-child(2) { transition-delay: 0.08s; }
+  .reveal:nth-child(3) { transition-delay: 0.16s; }
+
+  /* hero */
+  header { min-height: 88vh; display: flex; align-items: center; }
+  .hero h1 {
+    font-stretch: 121%;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 7.2vw, 4.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    max-width: 15em;
+  }
+  .hero h1 em { font-style: normal; }
+  .hero h1 .w1 { color: var(--physical); }
+  .hero h1 .w2 { color: var(--emotional); }
+  .hero h1 .w3 { color: var(--intellectual); }
+  .hero .sub { margin-top: 20px; color: var(--mono-text); font-size: 1.1rem; max-width: 33em; }
+  .btn {
+    display: inline-block;
+    background: var(--intellectual);
+    color: #000;
+    font-weight: 700;
+    font-stretch: 112%;
+    font-size: 1.05rem;
+    padding: 15px 36px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+    box-shadow: 0 0 0 rgba(255,200,58,0);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 34px rgba(255,200,58,0.25); }
+  .btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .hero .btn { margin-top: 36px; }
+  .hero .since { margin-top: 14px; }
+
+  /* sections */
+  section { padding: 15vh 0 0; }
+  .eyebrow { margin-bottom: 14px; }
+  h2 {
+    font-stretch: 118%;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    max-width: 22em;
+  }
+  .body-copy { color: #cfcfd6; max-width: 36em; font-size: 1.05rem; }
+  .body-copy + .body-copy { margin-top: 14px; }
+
+  .aside {
+    margin-top: 28px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(255,255,255,0.18);
+    max-width: 30em;
+    color: var(--mono-text);
+    font-size: 0.92rem;
+    font-style: italic;
+  }
+  .aside .who { font-style: normal; display: block; margin-top: 6px; }
+
+  .moments { display: grid; gap: 14px; margin-top: 36px; }
+  .moment {
+    background: color-mix(in srgb, var(--tile) 82%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 26px 26px 24px;
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 16px;
+  }
+  .moment .bar { border-radius: 7px; width: 6px; }
+  .moment h3 { font-stretch: 114%; font-size: 1.12rem; margin-bottom: 6px; }
+  .moment p { color: var(--mono-text); font-size: 0.98rem; }
+
+  .science-quote {
+    margin-top: 36px;
+    font-stretch: 116%;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3.4vw, 1.8rem);
+    line-height: 1.3;
+    max-width: 24em;
+  }
+  .science-quote span { color: var(--intellectual); }
+
+  .cta-final { text-align: center; padding: 20vh 0 16vh; }
+  .cta-final h2 { margin: 0 auto 8px; }
+  .cta-final .mono { display: block; margin-bottom: 26px; }
+
+  .footnotes-block {
+    padding: 10vh 0 8vh;
+    border-top: 1px solid rgba(255,255,255,0.09);
+  }
+  .fn {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--mono-text);
+    max-width: 46em;
+  }
+  .fn + .fn { margin-top: 10px; }
+
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.09);
+    padding: 30px 0 44px;
+    text-align: center;
+  }
+  footer a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s var(--ease-out);
+  }
+  footer a:hover { color: var(--intellectual); }
+  footer a:focus-visible { outline: 2px solid var(--intellectual); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .btn { transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="waves" aria-hidden="true"></canvas>
+
+<main>
+  <header class="wrap">
+    <div class="hero">
+      <h1 class="reveal">On the purported oscillation of human capacities, measured in days since birth.</h1>
+      <p class="sub reveal">BiOS plots the three biorhythm cycles &mdash; physical, emotional, intellectual &mdash; for you, your friends, and whatever Thursday you&rsquo;re worried about.</p>
+      <div class="reveal">
+        <a class="btn" href="#">Download on the App&nbsp;Store</a>
+        <p class="since mono">Free &middot; iPhone &middot; No account, just a birthday</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <p class="eyebrow mono reveal">Background</p>
+    <h2 class="reveal">Invented in the 1890s. Huge in the 1970s. Unproven ever since.</h2>
+    <p class="body-copy reveal">The theory begins, as many strange things do, in 1890s Berlin: Wilhelm Fliess &mdash; ear-nose-throat man and close friend of Freud &mdash; became convinced that human life runs on fixed cycles of 23 and 28 days, counted from birth.&sup1; A 33-day intellectual cycle was appended later by people who felt thinking deserved its own wave.</p>
+    <p class="body-copy reveal">By the 1970s the theory was popular. Airlines and Japanese transport companies charted their drivers&rsquo; &ldquo;critical days.&rdquo;&sup2; Pocket biorhythm calculators sold in the millions. Controlled studies then found the predictions performed precisely as well as chance, and everyone quietly moved on to star signs.</p>
+    <p class="body-copy reveal">We are not everyone.</p>
+    <div class="aside reveal">
+      &ldquo;Honestly the Fliess/Freud stuff is worth a whole page on its own.&rdquo;
+      <span class="who mono">&mdash; D., co-investigator</span>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow mono reveal">The cycles</p>
+    <h2 class="reveal">Three waves. Three alleged jurisdictions.</h2>
+    <div class="moments">
+      <div class="moment reveal">
+        <div class="bar" style="background:var(--physical)"></div>
+        <div>
+          <h3>Physical &middot; 23 days</h3>
+          <p>Governs (allegedly): strength, stamina, opening jars. BiOS opens on your own curves, today&rsquo;s numbers, and your running count of days on Earth.</p>
+        </div>
+      </div>
+      <div class="moment reveal">
+        <div class="bar" style="background:var(--emotional)"></div>
+        <div>
+          <h3>Emotional &middot; 28 days</h3>
+          <p>Governs (allegedly): mood, patience with group chats. Add friends by birthday &mdash; when Ol&rsquo; Mate&rsquo;s wave is in the trench, maybe ring him Wednesday.</p>
+        </div>
+      </div>
+      <div class="moment reveal">
+        <div class="bar" style="background:var(--intellectual)"></div>
+        <div>
+          <h3>Intellectual &middot; 33 days</h3>
+          <p>Governs (allegedly): judgement, wit, crossword speed. Point the chart at any date &mdash; the exam, the speech, the grand final &mdash; and see what the theory reckons.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="eyebrow mono reveal">Method</p>
+    <h2 class="reveal">We&rsquo;re checking whether any of this is real. With you.</h2>
+    <p class="body-copy reveal">Once a day, BiOS asks a single question: <strong>how do today&rsquo;s numbers feel?</strong> Responses are pooled anonymously &mdash; no names, no accounts &mdash; into a running tally of theory versus actual Tuesdays.</p>
+    <p class="science-quote reveal">If the waves mean anything, the tally will show it. If they don&rsquo;t, the tally will show that instead, <span>and we&rsquo;ll frame it.</span></p>
+    <div class="aside reveal">
+      &ldquo;Status so far: inconclusive, ongoing, quite good fun.&rdquo;
+      <span class="who mono">&mdash; T., co-investigator</span>
+    </div>
+  </section>
+
+  <section class="cta-final wrap">
+    <p class="eyebrow mono reveal">Enrolment</p>
+    <h2 class="reveal">Participation is free and takes one birthday. n&nbsp;=&nbsp;you, plus whoever you rope in.</h2>
+    <div class="reveal">
+      <span class="mono">Free &middot; iPhone &middot; Apparatus supplied</span>
+      <a class="btn" href="#">Download on the App&nbsp;Store</a>
+    </div>
+  </section>
+
+  <section class="wrap footnotes-block reveal">
+    <p class="fn">1. Fliess also believed the nose was the seat of most human ailments. We mention this so you can calibrate your trust appropriately.</p>
+    <p class="fn">2. The Ohmi Railway Co. reported fewer accidents after issuing drivers biorhythm warnings &mdash; an effect researchers attribute to people simply being told to drive carefully. Placebo, but make it sinusoidal.</p>
+    <p class="fn">3. The three waves realign only once every 23 &times; 28 &times; 33 = 21,252 days &mdash; a little over 58 years. The pattern drifting behind this page hasn&rsquo;t repeated since the day you were born, and won&rsquo;t for decades yet.</p>
+  </section>
+</main>
+
+<footer>
+  <span class="mono">BiOS &middot; made by Terry &amp; Dave &middot; a <a href="https://recreationalmath.com.au">Recreational Math</a> project</span>
+</footer>
+
+<script>
+  // Ambient waves: the three real cycles on one shared day-axis.
+  // All at the same amplitude, phases counted from the same birth (day 0),
+  // and time advancing at one rate — so the 23-day wave genuinely laps the 33-day one.
+  const canvas = document.getElementById("waves");
+  const ctx = canvas.getContext("2d");
+  const CYCLES = [
+    { period: 23, color: "64,200,224" },
+    { period: 28, color: "255,69,58" },
+    { period: 33, color: "255,200,58" }
+  ];
+  const DAYS_ACROSS = 60;   // days of the shared axis visible across the viewport
+  const DAY_RATE = 0.8;     // days that pass per real second of drift
+  const AMP = 0.30;         // one amplitude for all three
+  const DAY_ZERO = 17787;   // subject T.'s days on Earth, as of Fig. 1
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w, h, dpr;
+
+  function size() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    w = canvas.width = innerWidth * dpr;
+    h = canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+  }
+  addEventListener("resize", size);
+  size();
+
+  function frame(tms) {
+    const t = tms / 1000;
+    const firstDay = DAY_ZERO + t * DAY_RATE; // the day at the left edge, drifting forward
+    ctx.clearRect(0, 0, w, h);
+    ctx.lineWidth = 2 * dpr;
+    for (const c of CYCLES) {
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 6 * dpr) {
+        const day = firstDay + (x / w) * DAYS_ACROSS;
+        const y = h * 0.5 + Math.sin(day / c.period * 2 * Math.PI) * h * AMP;
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = "rgba(" + c.color + ",0.14)";
+      ctx.stroke();
+    }
+    if (!reduceMotion) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Scroll choreography
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }, { threshold: 0.18 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
